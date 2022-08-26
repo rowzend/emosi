@@ -1,0 +1,31 @@
+<?php
+
+namespace Database\Seeders;
+
+use App\Models\Category;
+use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use Illuminate\Database\Seeder;
+
+class CreateCategories extends Seeder
+{
+    /**
+     * Run the database seeds.
+     *
+     * @return void
+     */
+    public function run()
+    {
+        Category::Create([
+            'nama' => 'Mutasi',
+            'slug' => 'mutasi'
+        ]);
+        Category::Create([
+            'nama' => 'Identitas',
+            'slug' => 'kepegawaian'
+        ]);
+        Category::Create([
+            'nama' => 'Kepangkatan',
+            'slug' => 'promosi'
+        ]);
+    }
+}
