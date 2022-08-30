@@ -9,7 +9,7 @@
 					Login to <strong>E MUSISI</strong>
 				</span>
 			</div>
-
+			@include('sweetalert::alert')
 			<form class="form-content" method="POST" action="{{ route('login') }}">
 				@csrf
 				<div class="input-wrapper">

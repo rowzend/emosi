@@ -1,12 +1,15 @@
 <?php
 
+use App\Http\Controllers\BiodataPegawaiController;
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\ManagerHomeControoler;
+use App\Http\Controllers\Mutasi\BerkasMutasiController;
 use App\Http\Controllers\PostController;
+use App\Http\Controllers\SuperAdminHomeController;
 use App\Models\Category;
 use Illuminate\Support\Facades\Auth;
-use App\Models\Post;
 
 /*
 |--------------------------------------------------------------------------
@@ -61,43 +64,20 @@ Route::get('/well', function () {
 
 Auth::routes();
 
-/*------------------------------------------
---------------------------------------------
-All Normal Users Routes List
---------------------------------------------
---------------------------------------------*/
-Route::middleware(['auth', 'user-access:user'])->group(function () {
-
-    Route::get('/home', [HomeController::class, 'index'])->name('home');
-});
-
-/*------------------------------------------
---------------------------------------------
-All Super Admin Routes List
---------------------------------------------
---------------------------------------------*/
-Route::middleware(['auth', 'user-access:super-admin'])->group(function () {
-
-    Route::get('/super-admin/home', [HomeController::class, 'superAdminHome'])->name('super.admin.home');
-});
-
-/*------------------------------------------
---------------------------------------------
-All Admin Routes List
---------------------------------------------
---------------------------------------------*/
-Route::middleware(['auth', 'user-access:manager'])->group(function () {
-
-    Route::get('/manager/home', [HomeController::class, 'managerHome'])->name('manager.home');
-});
-Auth::routes();
-
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
-Auth::routes();
+Route::prefix('super-admin')->group(function () {
+    Route::get('home', [SuperAdminHomeController::class, 'superAdminHome'])->name('home.superAdmin');
+});
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::prefix('manager')->group(function () {
+    Route::get('home', [ManagerHomeControoler::class, 'managerHome'])->name('home.manager');
+});
 
-Auth::routes();
+Route::prefix('dashboard')->group(function () {
+    Route::get('home', [App\Http\Controllers\UserHomeController::class, 'userHome'])->name('home.users');
+});
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::resource('biodata-pegawai', BiodataPegawaiController::class)->middleware(['auth', 'active']);
+
+Route::resource('mutasi-berkas', BerkasMutasiController::class)->middleware(['auth', 'active', 'mutasi']);

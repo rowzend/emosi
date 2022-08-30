@@ -8,11 +8,11 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Database\Eloquent\Casts\Attribute;
-  
+
 class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
-  
+
     /**
      * The attributes that are mass assignable.
      *
@@ -23,9 +23,10 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
-        'type'
+        'type',
+        'status'
     ];
-  
+
     /**
      * The attributes that should be hidden for serialization.
      *
@@ -36,7 +37,7 @@ class User extends Authenticatable
         'password',
         'remember_token',
     ];
-  
+
     /**
      * The attributes that should be cast.
      *
@@ -46,7 +47,7 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
- 
+
     /**
      * Interact with the user's first name.
      *
@@ -55,11 +56,12 @@ class User extends Authenticatable
      */
     protected function type(): Attribute
     {
+        // ini sangat mempengaruhi value yg ada di database
         return new Attribute(
             get: fn ($value) =>  ["user", "super-admin", "manager"][$value],
         );
     }
-    
+
     public function mutasi()
     {
         return $this->hasMany(Post::class);

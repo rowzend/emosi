@@ -3,46 +3,26 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class HomeController extends Controller
 {
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
     public function __construct()
     {
-        $this->middleware('auth');
+        $this->middleware(['auth', 'active']);
     }
 
-    /**
-     * Show the application dashboard.
-     *
-     * @return \Illuminate\Contracts\Support\Renderable
-     */
     public function index()
     {
-        return view('login.user.home');
-    }
+        if (Auth::user()->type === "super-admin") {
 
-    /**
-     * Show the application dashboard.
-     *
-     * @return \Illuminate\Contracts\Support\Renderable
-     */
-    public function superAdminHome()
-    {
-        return view('login.superadmin.superAdminHome');
-    }
+            return redirect()->route('home.superAdmin');
+        } elseif (Auth::user()->type === "manager") {
 
-    /**
-     * Show the application dashboard.
-     *
-     * @return \Illuminate\Contracts\Support\Renderable
-     */
-    public function managerHome()
-    {
-        return view('login.admin.adminHome');
+            return redirect()->route('home.manager');
+        } else {
+
+            return redirect()->route('home.users');
+        }
     }
 }

@@ -2,6 +2,10 @@
 
 namespace App\Http;
 
+use App\Http\Middleware\Manager;
+use App\Http\Middleware\Mutasi;
+use App\Http\Middleware\SuperAdmin;
+use App\Http\Middleware\Users;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 
 class Kernel extends HttpKernel
@@ -63,5 +67,12 @@ class Kernel extends HttpKernel
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
         'user-access' => \App\Http\Middleware\UserAccess::class,
+
+        // middleware user active
+        'active' => \App\Http\Middleware\UserActive::class,
+        'mutasi' => Mutasi::class,
+        'superAdmin' => SuperAdmin::class,
+        'manager'   => Manager::class,
+        'users'     => Users::class,
     ];
 }
